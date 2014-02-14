@@ -10,16 +10,31 @@
      <script type="text/javascript" src="csv.js"></script>
   </head>
   <body>
+    <script type="text/html" id='mytemplate'>
+	<table class="center">
+	  <% _.each(items, function(fila, t) { %>
+	    <% if (error[t] == false) %>
+	    	<tr>
+            <% else %> 
+ 		<tr class="error">
+	    <% _.each(fila, function(name) { %>
+	      <td><%= name %></td>
+	    <% }); %>
+	    </tr>
+	  <% }); %>
+	</table>
+    </script>
     <h1>Comma Separated Value Analyzer</h1>
     <div>
       <i>Write a CSV string. Click the table button. The program outputs a table with the specified data.</i>
     </div>
     <table>
-      <tr>
-        <th>CSV string:</th> <!-- autofocus attribute is HTML5 -->
-        <td><textarea autofocus cols = "80" rows = "5" id="original"></textarea></td> 
-      </tr>
+        <th>CSV string:</th>
+        <td> <textarea autofocus cols = "80" rows = "5" id="original"></textarea></td>
+        <tr>
+	</tr>
     </table>
+    
     <button type="button">Table:</button><br>
     <span class="output" id="finaltable"></span>
   </body>
