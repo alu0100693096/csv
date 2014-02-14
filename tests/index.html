@@ -24,6 +24,20 @@
     <script src="../csv.js"></script>
     <script>mocha.setup('tdd')</script>
     <script src="tests.js"></script>
+    <script type="text/html" id='mytemplate'>
+	<table class="center">
+	  <% _.each(items, function(fila, t) { %>
+	    <% if (error[t] == false) %>
+	    	<tr>
+            <% else %> 
+ 		<tr class="error">
+	    <% _.each(fila, function(name) { %>
+	      <td><%= name %></td>
+	    <% }); %>
+	    </tr>
+	  <% }); %>
+	</table>
+    </script>
 
     <script>
       mocha.run();
