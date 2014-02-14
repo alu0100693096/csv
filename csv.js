@@ -13,52 +13,51 @@ function calculate() {
   var regexp = /\s*"((?:[^"\\]|\\.)*)"\s*,?|\s*([^,]+),?|\s*,/g;
   var lines = temp.split(/\n+\s*/);
   var commonLength = NaN;
-  var r = [];
-  // Underscore
-  var row = "<% _.each(items, function(name) { %>"     +
-            "                    <td><%= name %></td>" +
-            "              <% }); %>";
+  var tabla = [];
+  var fila = [];
+  var error = [];
 
+  // Plantilla
+  var planti = _.template(mytemplate.innerHTML);
+  
+  
   if (window.localStorage) localStorage.original  = temp;
   
   for(var t in lines) {
     var temp = lines[t];
     var m = temp.match(regexp);
     var result = [];
-    var error = false;
     
     if (m) {
       if (commonLength && (commonLength != m.length)) {
         //alert('ERROR! row <'+temp+'> has '+m.length+' items!');
-        error = true;
+        error[t] = true;
       }
       else {
         commonLength = m.length;
-        error = false;
+        error[t] = false;
       }
+      fila = [];
       for(var i in m) {
         var removecomma = m[i].replace(/,\s*$/,'');
         var remove1stquote = removecomma.replace(/^\s*"/,'');
         var removelastquote = remove1stquote.replace(/"\s*$/,'');
         var removeescapedquotes = removelastquote.replace(/\\"/,'"');
-        result.push(removeescapedquotes);
+        fila.push(removeescapedquotes);
       }
-      var tr = error? '<tr class="error">' : '<tr>';
-      r.push(tr+_.template(row, {items : result})+"</tr>");
+      tabla.push(fila);
+ 
     }
     else {
       alert('ERROR! row '+temp+' does not look as legal CSV');
-      error = true;
+      error[t] = (true);
     }
   }
-  r.unshift('<p>\n<table class="center" id="result">');
-  r.push('</table>');
-  //alert(r.join('\n')); // debug
-  finaltable.innerHTML = r.join('\n');
+  finaltable.innerHTML = planti({items: tabla, error: error});
 }
 
 window.onload = function() {
-  // Para guardar "cookies"
+  // Para el almacenamiento local
   if (window.localStorage && localStorage.original) {
     document.getElementById("original").value = localStorage.original;
   }
