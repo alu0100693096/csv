@@ -8,7 +8,7 @@ $(document).ready(function() {
 
 function calculate() {
   var result;
-  var original       = document.getElementById("original");$("#usageList").html();
+  var original       = document.getElementById("original");
   var temp = original.value;
   var regexp = /\s*"((?:[^"\\]|\\.)*)"\s*,?|\s*([^,]+),?|\s*,/g;
   var lines = temp.split(/\n+\s*/);
@@ -62,3 +62,4 @@ window.onload = function() {
     document.getElementById("original").value = localStorage.original;
   }
 };
+
